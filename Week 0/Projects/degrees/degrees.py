@@ -94,19 +94,21 @@ def shortest_path(source, target):
     frontier = QueueFrontier()
     start = Node(source, None, None)
     frontier.add(start)
-    explored = set([start])
+    explored = set(source)
     while True:
 
         if frontier.empty():
             return None
         
         node = frontier.remove()
+        explored.add(node.state)
         
         if node.state == target:
             out = list()
             while node.parent is not None:
-                out[:0] = [(node.action, node.state)]
+                out.append((node.action, node.state))
                 node = node.parent
+            out.reverse()
             return out
 
         for (movie_id, person_id) in neighbors_for_person(node.state):
@@ -114,10 +116,6 @@ def shortest_path(source, target):
                 frontier.add(
                     Node(person_id, node, movie_id)
                 )
-
-
-    # TODO
-    raise NotImplementedError
 
 
 
